@@ -1,0 +1,42 @@
+<script id="fs" type="x-shader/x-fragment">
+precision mediump float;
+uniform float time;
+uniform vec2  mouse;
+uniform vec2  resolution;
+
+/**
+ * Referenced / computer chaos fractal
+ */
+
+float PI = 3.1415926;
+float beta1 = 1.0;
+float beta2 = 1.0;
+float gamma = 15.0;
+float alpha = 1.0;
+float modf = 3.0;
+  
+void main(void) {
+  // center center
+  vec2 p = vec2(gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+  // mouse position
+  vec2 m = mouse;
+  // start
+  p = vec2(beta1 + (gamma * p.x) - time * 2.0, beta2 + (gamma * p.y) - time * 2.0);
+  float z = alpha * (sin(p.x) + sin(p.y)) + time;
+  float c = 0.0;
+  c = ceil(z);
+  if (mod(c, modf) == 0.0) {
+    gl_FragColor = vec4(0.92, 0.42, 0.55, 1.0);
+  } else {
+    gl_FragColor = vec4(1.0, 0.89, 0.24, 1.0);
+  }
+}
+</script>
+
+<script id="vs" type="x-shader/x-vertex">
+attribute vec3 position;
+
+void main(void){
+  gl_Position = vec4(position, 1.0);
+}
+</script>
